@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Test HTML page for Chrome Private Network Access</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="js/scripts.js"></script>
+    <script src="js/chat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.js"></script>
+    <script src="js/stomp.js"></script>
+</head>
+
+<body>
+    <h1>Willkommen zu Chrome Private Network Access</h1>
+    <p>Hier sollte ein Bild erscheinen, das per HTTP von <code>localhost</code> geladen wird. Dieses ist nicht per CORS
+        freigegeben und ohne Header <code>Access-Control-Allow-Private-Network</code>.</p>
+    <img src="http://localhost:8080/resources/image-of-the-day">
+    <hr />
+    <p>Hier sollte ein Bild erscheinen, das per HTTP von <code>localhost</code> geladen wird. Dieses ist per CORS
+        freigegeben, aber ohne Header <code>Access-Control-Allow-Private-Network</code>.</p>
+    <img src="http://localhost:8080/exposed-by-cors/resources/image-of-the-day">
+    <hr />
+    <p>Hier sollte ein Bild erscheinen, das per HTTP von <code>localhost</code> geladen wird. Dieses ist per CORS
+        freigegeben und per Header <code>Access-Control-Allow-Private-Network</code>.</p>
+    <img src="http://localhost:8080/exposed-by-cors-new-headers/resources/image-of-the-day">
+    <hr />
+    <p>Hier können asynchrone REST-Requests zum lokalen Server abgeschickt werden.</p>
+    <a class="waves-effect waves-light btn" onclick="loadFromLocalhostUsingHttp('nocors')">HTTP von
+        <code>localhost</code>, kein CORS</a>
+    &nbsp;
+    <a class="waves-effect waves-light btn" onclick="loadFromLocalhostUsingHttp('cors')">HTTP von
+        <code>localhost</code>, CORS</a>
+    &nbsp;
+    <a class="waves-effect waves-light btn" onclick="loadFromLocalhostUsingHttp('corsPlus')">HTTP von
+        <code>localhost</code>, CORS und neue Header</a>
+    <p>Antworten vom Server:</p>
+    <ol id="server-responses"></ol>
+    <hr />
+    <p>Hier kann per WebSockets gechattet werden. Es wird per <code>ws://</code> über <code>localhost</code> gechattet.
+    </p>
+    <a id="connectBtn" class="waves-effect waves-light btn" onclick="connect('wsLocalhost')">Verbinden</a>
+    <a id="disconnectBtn" class="waves-effect waves-light btn" onclick="disconnect()">Trennen</a>
+    <form id="chatForm" onsubmit="chatFormSubmittedWsIp(event)">
+        <div class="row">
+            <div class="input-field col s6">
+                <input value="" id="chatInput" type="text" class="validate">
+                <label class="active" for="chatInput">Sag es allen:</label>
+            </div>
+            <input type="submit" id="chatFormSubmit" class="waves-effect waves-light btn"></input>
+        </div>
+    </form>
+    <p id="chatResponses"></p>
+</body>
+
+</html>
